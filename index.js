@@ -25,10 +25,10 @@ app.get("/", (req, res) => {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     const productcollection = client.db("krishilink").collection("Products");
 
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
 
     app.get("/latestproducts", async (req, res) => {
       const cursor = productcollection.find().sort({ _id: -1 }).limit(6);

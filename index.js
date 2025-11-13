@@ -168,6 +168,18 @@ async function run() {
         res.status(500).json({ success: false, error: "Server error" });
       }
     });
+    app.post("/api/crops", async (req, res) => {
+      try {
+        const crop = req.body;
+        console.log(" Received Crop:", crop);
+
+        const result = await productcollection.insertOne(crop);
+        res.status(201).json({ success: true, insertedId: result.insertedId });
+      } catch (error) {
+        console.error(" Error adding crop:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
+      }
+    });
   } finally {
   }
 }

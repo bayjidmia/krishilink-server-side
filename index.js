@@ -1,6 +1,7 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const port = 3000;
@@ -8,8 +9,7 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-const uri =
-  "mongodb+srv://krishilink:8RdwOx6Vzq60RYaJ@cluster0.xyk22ac.mongodb.net/?appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.xyk22ac.mongodb.net/?appName=Cluster0`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -18,7 +18,6 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-// 8RdwOx6Vzq60RYaJ
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -74,7 +73,6 @@ async function run() {
 
     app.get("/api/myinterests", async (req, res) => {
       let { userEmail } = req.query;
-      console.log(" Received userEmail:", userEmail);
 
       if (!userEmail)
         return res.status(400).json({ error: "No user email provided" });

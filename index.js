@@ -180,6 +180,35 @@ async function run() {
         res.status(500).json({ success: false, message: "Server Error" });
       }
     });
+
+    app.get("/api/crops", async (req, res) => {
+      try {
+        let { userEmail } = req.query;
+        console.log("Received userEmail:", userEmail);
+
+        // if (!userEmail) {
+        //   return res.status(400).json({ error: "No user email provided" });
+        // }
+
+        userEmail = userEmail.trim().toLowerCase();
+
+        const crops = await productcollection
+          .find({ "owner.ownerEmail": userEmail })
+          .toArray();
+        console.log("Crops found:", crops.length);
+        res.json(crops);
+      } catch (err) {
+        console.error("Error fetching crops:", err);
+        res.status(500).json({ error: "Server error" });
+      }
+    });
+
+    app.delete("/api/crops/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await productcollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
   }
 }
